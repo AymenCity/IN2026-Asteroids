@@ -71,10 +71,10 @@ void Asteroids::Start()
 	mLivesLabel->SetVisible(false);
 
 	// Add a player (watcher) to the game world
-	//mGameWorld->AddListener(&mPlayer);
+	mGameWorld->AddListener(&mPlayer);
 
 	// Add this class as a listener of the player
-	//mPlayer.AddListener(thisPtr);
+	mPlayer.AddListener(thisPtr);
 
 	// Start the game
 	GameSession::Start();
@@ -91,13 +91,28 @@ void Asteroids::Stop()
 
 void Asteroids::OnKeyPressed(uchar key, int x, int y)
 {
-	switch (key)
-	{
-	case ' ':
-		mSpaceship->Shoot();
-		break;
-	default:
-		break;
+	if (!mSpaceship)	
+		switch (key)
+		{
+		case ' ':
+			mStartLabel->SetVisible(false);
+			mScoreLabel->SetVisible(true);
+			mLivesLabel->SetVisible(true);
+			mGameWorld->AddObject(CreateSpaceship());
+			CreateAsteroids(4);
+			break;
+		default:
+			break;
+		}
+	else {
+		switch (key)
+		{
+		case ' ':
+			mSpaceship->Shoot();
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -249,7 +264,7 @@ void Asteroids::CreateGUI()
 	mGameDisplay->GetContainer()->AddComponent(game_over_component, GLVector2f(0.5f, 0.5f));
 
 	// create start_screen label
-	mStartLabel = shared_ptr<GUILabel>(new GUILabel("PRESS ANY KEY TO START"));
+	mStartLabel = shared_ptr<GUILabel>(new GUILabel("PRESS SPACEBAR TO START"));
 	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
 	mStartLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
