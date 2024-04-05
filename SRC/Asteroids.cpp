@@ -92,18 +92,13 @@ void Asteroids::Stop()
 void Asteroids::OnKeyPressed(uchar key, int x, int y)
 {
 	if (!mSpaceship)
-		switch (key)
-		{
-		case ' ':
-			mStartLabel->SetVisible(false);	// hides start label
-			mScoreLabel->SetVisible(true);	// displays score label
-			mLivesLabel->SetVisible(true);	// displays lives label
-			mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
-			CreateAsteroids(4);							// spawns more asteroids
-			break;
-		default:
-			break;
-		}
+	{
+		mStartLabel->SetVisible(false);	// hides start label
+		mScoreLabel->SetVisible(true);	// displays score label
+		mLivesLabel->SetVisible(true);	// displays lives label
+		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
+		CreateAsteroids(4);							// spawns more asteroids
+	}
 	else {
 		switch (key)
 		{
@@ -264,7 +259,7 @@ void Asteroids::CreateGUI()
 	mGameDisplay->GetContainer()->AddComponent(game_over_component, GLVector2f(0.5f, 0.5f));
 
 	// create start_screen label
-	mStartLabel = shared_ptr<GUILabel>(new GUILabel("PRESS SPACEBAR TO START"));
+	mStartLabel = shared_ptr<GUILabel>(new GUILabel("PRESS ANY KEY TO START"));
 	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
 	mStartLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
