@@ -29,25 +29,5 @@ bool Asteroid::CollisionTest(shared_ptr<GameObject> o)
 
 void Asteroid::OnCollision(const GameObjectList& objects)
 {
-	//mWorld->FlagForRemoval(GetThisPtr());
-
-	// Split the asteroid into smaller asteroids
-	const int numSmallerAsteroids = 3; // Number of smaller asteroids to create
-	for (int i = 0; i < numSmallerAsteroids; ++i) {
-		// Create a new smaller asteroid
-		shared_ptr<Asteroid> smallerAsteroid = make_shared<Asteroid>();
-
-
-
-		// Set the position of the smaller asteroid to be close to the original asteroid
-		smallerAsteroid->SetPosition(mPosition.x + (rand() % 10 - 5));
-
-
-		// Set the velocity of the smaller asteroid to be similar to the original asteroid
-		smallerAsteroid->SetVelocity(mVelocity.x + (rand() % 6 - 3));
-
-		// Add the smaller asteroid to the game world
-		mWorld->AddObject(smallerAsteroid);
-	}
-
+	mWorld->FlagForRemoval(GetThisPtr());
 }

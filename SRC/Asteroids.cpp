@@ -91,15 +91,15 @@ void Asteroids::Stop()
 
 void Asteroids::OnKeyPressed(uchar key, int x, int y)
 {
-	if (!mSpaceship)	
+	if (!mSpaceship)
 		switch (key)
 		{
 		case ' ':
-			mStartLabel->SetVisible(false);
-			mScoreLabel->SetVisible(true);
-			mLivesLabel->SetVisible(true);
-			mGameWorld->AddObject(CreateSpaceship());
-			CreateAsteroids(4);
+			mStartLabel->SetVisible(false);	// hides start label
+			mScoreLabel->SetVisible(true);	// displays score label
+			mLivesLabel->SetVisible(true);	// displays lives label
+			mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
+			CreateAsteroids(4);							// spawns more asteroids
 			break;
 		default:
 			break;
