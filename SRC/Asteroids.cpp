@@ -20,6 +20,7 @@ Asteroids::Asteroids(int argc, char *argv[])
 {
 	mLevel = 0;
 	mAsteroidCount = 0;
+	mItemsCount = 0;
 }
 
 /** Destructor. */
@@ -57,6 +58,7 @@ void Asteroids::Start()
 	Animation *explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("explosion", 64, 1024, 64, 64, "explosion_fs.png");
 	Animation *asteroid1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("asteroid1", 128, 8192, 128, 128, "asteroid1_fs.png");
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
+	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "item1_fs.png");
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -98,6 +100,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		mLivesLabel->SetVisible(true);	// displays lives label
 		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
 		CreateAsteroids(4);							// spawns more asteroids
+		CreateItems(2);
 	}
 	else {
 		switch (key)
@@ -225,6 +228,23 @@ void Asteroids::CreateAsteroids(const uint num_asteroids)
 		asteroid->SetSprite(asteroid_sprite);
 		asteroid->SetScale(0.2f);
 		mGameWorld->AddObject(asteroid);
+	}
+}
+
+void Asteroids::CreateItems(const uint num_items)
+{
+	mItemsCount = num_items;
+	for (uint i = 0; i < num_items; i++)
+	{
+		Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("item1");
+		shared_ptr<Sprite> item1_sprite
+			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+		item1_sprite->SetLoopAnimation(true);
+		shared_ptr<GameObject> item = make_shared<Asteroid>();
+		item->SetBoundingShape(make_shared<BoundingSphere>(item->GetThisPtr(), 10.0f));
+		item->SetSprite(item1_sprite);
+		item->SetScale(0.2f);
+		mGameWorld->AddObject(item);
 	}
 }
 

@@ -56,11 +56,13 @@ private:
 
 	uint mLevel;
 	uint mAsteroidCount;
+	uint mItemsCount;
 
 	void ResetSpaceship();
 	shared_ptr<GameObject> CreateSpaceship();
 	void CreateGUI();
 	void CreateAsteroids(const uint num_asteroids);
+	void CreateItems(const uint num_items);
 	shared_ptr<GameObject> CreateExplosion();
 	
 	const static uint SHOW_GAME_OVER = 0;
