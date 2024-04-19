@@ -24,6 +24,10 @@ public:
 			mLives -= 1;
 			FirePlayerKilled();
 		}
+		if (object->GetType() == GameObjectType("Power")) {
+			mLives++;
+			FirePlayerKilled();
+		}
 	}
 
 	void AddListener(shared_ptr<IPlayerListener> listener)

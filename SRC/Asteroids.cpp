@@ -1,4 +1,5 @@
 #include "Asteroid.h"
+#include "Power.h"
 #include "Asteroids.h"
 #include "Animation.h"
 #include "AnimationManager.h"
@@ -100,7 +101,7 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		mLivesLabel->SetVisible(true);	// displays lives label
 		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
 		CreateAsteroids(4);							// spawns more asteroids
-		CreateItems(2);
+		CreateItems(3);
 	}
 	else {
 		switch (key)
@@ -166,6 +167,21 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
+	}
+	if (object->GetType() == GameObjectType("Power"))
+	{
+		//shared_ptr<GameObject> explosion = CreateExplosion();
+		//explosion->SetPosition(object->GetPosition());
+		//explosion->SetRotation(object->GetRotation());
+		//mGameWorld->AddObject(explosion);
+		//mAsteroidCount--;
+		//if (mAsteroidCount <= 0)
+		//{
+		//	SetTimer(500, START_NEXT_LEVEL);
+		//}
+		mItemsCount--;
+		
+	
 	}
 }
 
@@ -240,7 +256,7 @@ void Asteroids::CreateItems(const uint num_items)
 		shared_ptr<Sprite> item1_sprite
 			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
 		item1_sprite->SetLoopAnimation(true);
-		shared_ptr<GameObject> item = make_shared<Asteroid>();
+		shared_ptr<GameObject> item = make_shared<Power>();
 		item->SetBoundingShape(make_shared<BoundingSphere>(item->GetThisPtr(), 10.0f));
 		item->SetSprite(item1_sprite);
 		item->SetScale(0.2f);
@@ -305,6 +321,9 @@ void Asteroids::OnScoreChanged(int score)
 	// Get the score message as a string
 	std::string score_msg = msg_stream.str();
 	mScoreLabel->SetText(score_msg);
+	if (score % 50 == 0) {		// condition where every 50 points, an item spawns
+		CreateItems(1);
+	}
 }
 
 void Asteroids::OnPlayerKilled(int lives_left)
