@@ -7,6 +7,7 @@
 #include "GameObjectType.h"
 #include "IPlayerListener.h"
 #include "IGameWorldListener.h"
+#include "Asteroid.h"
 
 class Player : public IGameWorldListener
 {

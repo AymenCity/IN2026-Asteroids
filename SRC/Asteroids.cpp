@@ -156,6 +156,7 @@ void Asteroids::OnSpecialKeyReleased(int key, int x, int y)
 
 void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 {
+	//bool isPower = false;
 	if (object->GetType() == GameObjectType("Asteroid"))
 	{
 		shared_ptr<GameObject> explosion = CreateExplosion();
@@ -167,6 +168,7 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		{ 
 			SetTimer(500, START_NEXT_LEVEL); 
 		}
+		isPower = false;
 	}
 	if (object->GetType() == GameObjectType("Power"))
 	{
@@ -179,7 +181,8 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		//{
 		//	SetTimer(500, START_NEXT_LEVEL);
 		//}
-		mItemsCount--;
+		isPower = true;
+
 		
 	
 	}
@@ -205,6 +208,10 @@ void Asteroids::OnTimer(int value)
 	if (value == SHOW_GAME_OVER)
 	{
 		mGameOverLabel->SetVisible(true);
+	}
+	if (value == POWER_1)
+	{
+		
 	}
 
 }
@@ -340,11 +347,11 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	std::string lives_msg = msg_stream.str();
 	mLivesLabel->SetText(lives_msg);
 
-	if (lives_left > 0) 
-	{ 
-		SetTimer(1000, CREATE_NEW_PLAYER); 
+	if (lives_left > 0 && isPower == false)
+	{
+		SetTimer(1000, CREATE_NEW_PLAYER);
 	}
-	else
+	if (lives_left <= 0)
 	{
 		SetTimer(500, SHOW_GAME_OVER);
 	}
