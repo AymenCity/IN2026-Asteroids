@@ -59,7 +59,8 @@ void Asteroids::Start()
 	Animation *explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("explosion", 64, 1024, 64, 64, "explosion_fs.png");
 	Animation *asteroid1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("asteroid1", 128, 8192, 128, 128, "asteroid1_fs.png");
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
-	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "item1_fs.png");
+	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "item1_fs.png"); //object - item
+	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "power1_fs.png"); //explosion - item
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -172,11 +173,11 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 	}
 	if (object->GetType() == GameObjectType("Power"))
 	{
-		//shared_ptr<GameObject> explosion = CreateExplosion();
-		//explosion->SetPosition(object->GetPosition());
-		//explosion->SetRotation(object->GetRotation());
-		//mGameWorld->AddObject(explosion);
-		//mAsteroidCount--;
+		shared_ptr<GameObject> power1 = CreatePowerExplosion();
+		power1->SetPosition(object->GetPosition());
+		power1->SetRotation(object->GetRotation());
+		mGameWorld->AddObject(power1);
+	
 		//if (mAsteroidCount <= 0)
 		//{
 		//	SetTimer(500, START_NEXT_LEVEL);
@@ -335,10 +336,6 @@ void Asteroids::OnScoreChanged(int score)
 
 void Asteroids::OnPlayerKilled(int lives_left)
 {
-	shared_ptr<GameObject> explosion = CreateExplosion();
-	explosion->SetPosition(mSpaceship->GetPosition());
-	explosion->SetRotation(mSpaceship->GetRotation());
-	mGameWorld->AddObject(explosion);
 
 	// Format the lives left message using an string-based stream
 	std::ostringstream msg_stream;
@@ -350,10 +347,18 @@ void Asteroids::OnPlayerKilled(int lives_left)
 	if (lives_left > 0 && isPower == false)
 	{
 		SetTimer(1000, CREATE_NEW_PLAYER);
+		shared_ptr<GameObject> explosion = CreateExplosion();
+		explosion->SetPosition(mSpaceship->GetPosition());
+		explosion->SetRotation(mSpaceship->GetRotation());
+		mGameWorld->AddObject(explosion);
 	}
 	if (lives_left <= 0)
 	{
 		SetTimer(500, SHOW_GAME_OVER);
+		shared_ptr<GameObject> explosion = CreateExplosion();
+		explosion->SetPosition(mSpaceship->GetPosition());
+		explosion->SetRotation(mSpaceship->GetRotation());
+		mGameWorld->AddObject(explosion);
 	}
 }
 
@@ -367,6 +372,18 @@ shared_ptr<GameObject> Asteroids::CreateExplosion()
 	explosion->SetSprite(explosion_sprite);
 	explosion->Reset();
 	return explosion;
+}
+
+shared_ptr<GameObject> Asteroids::CreatePowerExplosion()
+{
+	Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("power1");
+	shared_ptr<Sprite> item1explosion_sprite =
+		make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+	item1explosion_sprite->SetLoopAnimation(false);
+	shared_ptr<GameObject> power1 = make_shared<Explosion>();
+	power1->SetSprite(item1explosion_sprite);
+	power1->Reset();
+	return power1;
 }
 
 
