@@ -60,7 +60,7 @@ void Asteroids::Start()
 	Animation *asteroid1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("asteroid1", 128, 8192, 128, 128, "asteroid1_fs.png");
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
 	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "item1_fs.png"); //object - item
-	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "power1_fs.png"); //explosion - item
+	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "power1_fs_new.png"); //explosion - item
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -210,11 +210,6 @@ void Asteroids::OnTimer(int value)
 	{
 		mGameOverLabel->SetVisible(true);
 	}
-	if (value == POWER_1)
-	{
-		
-	}
-
 }
 
 // PROTECTED INSTANCE METHODS /////////////////////////////////////////////////
@@ -361,6 +356,7 @@ void Asteroids::OnPlayerKilled(int lives_left)
 		mGameWorld->AddObject(explosion);
 	}
 }
+
 
 shared_ptr<GameObject> Asteroids::CreateExplosion()
 {
