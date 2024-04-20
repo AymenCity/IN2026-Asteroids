@@ -69,6 +69,7 @@ private:
 	const static uint SHOW_GAME_OVER = 0;
 	const static uint START_NEXT_LEVEL = 1;
 	const static uint CREATE_NEW_PLAYER = 2;
+	const static uint ITEM_PICKED = 3;
 
 	ScoreKeeper mScoreKeeper;
 	Player mPlayer;

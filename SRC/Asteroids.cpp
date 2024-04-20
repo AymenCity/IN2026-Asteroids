@@ -210,6 +210,11 @@ void Asteroids::OnTimer(int value)
 	{
 		mGameOverLabel->SetVisible(true);
 	}
+
+	if (value == ITEM_PICKED)
+	{
+		mGameWorld->AddObject(mSpaceship);
+	}
 }
 
 // PROTECTED INSTANCE METHODS /////////////////////////////////////////////////
@@ -346,6 +351,10 @@ void Asteroids::OnPlayerKilled(int lives_left)
 		explosion->SetPosition(mSpaceship->GetPosition());
 		explosion->SetRotation(mSpaceship->GetRotation());
 		mGameWorld->AddObject(explosion);
+	}
+	if (lives_left > 0 && isPower == true)
+	{
+		SetTimer(0, ITEM_PICKED);
 	}
 	if (lives_left <= 0)
 	{
