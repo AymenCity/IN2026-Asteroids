@@ -64,6 +64,7 @@ void Asteroids::Start()
 	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "itemLife_fs.png"); //object - item
 	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "itemLifeExplosion_fs.png"); //explosion - item
 	Animation *item2_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item2", 128, 8192, 128, 128, "itemDouble_fs.png"); //object - item
+	Animation *item2explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power2", 64, 1024, 64, 64, "itemDoubleExplosion_fs.png"); //explosion - item
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -187,9 +188,13 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		//	SetTimer(500, START_NEXT_LEVEL);
 		//}
 		isPower = true;
-
-		
-	
+	}
+	if (object->GetType() == GameObjectType("ItemDouble"))
+	{
+		shared_ptr<GameObject> power2 = CreatePowerExplosion2();
+		power2->SetPosition(object->GetPosition());
+		power2->SetRotation(object->GetRotation());
+		mGameWorld->AddObject(power2);
 	}
 }
 
@@ -410,6 +415,18 @@ shared_ptr<GameObject> Asteroids::CreatePowerExplosion()
 	power1->SetSprite(item1explosion_sprite);
 	power1->Reset();
 	return power1;
+}
+
+shared_ptr<GameObject> Asteroids::CreatePowerExplosion2()
+{
+	Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("power2");
+	shared_ptr<Sprite> item2explosion_sprite =
+		make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+	item2explosion_sprite->SetLoopAnimation(false);
+	shared_ptr<GameObject> power2 = make_shared<Explosion>();
+	power2->SetSprite(item2explosion_sprite);
+	power2->Reset();
+	return power2;
 }
 
 

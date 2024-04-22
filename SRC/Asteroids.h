@@ -66,6 +66,7 @@ private:
 	void CreateItem2(const uint num_items);
 	shared_ptr<GameObject> CreateExplosion();
 	shared_ptr<GameObject> CreatePowerExplosion();
+	shared_ptr<GameObject> CreatePowerExplosion2();
 	
 	const static uint SHOW_GAME_OVER = 0;
 	const static uint START_NEXT_LEVEL = 1;
