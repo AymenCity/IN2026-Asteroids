@@ -3,8 +3,6 @@
   Generating Code...
   Skipping... (no relevant changes detected)
   main.cpp
-  ItemLife.cpp
-  ItemDouble.cpp
 Asteroid.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   Asteroids.vcxproj -> C:\Users\aymen\Documents\GitHub\IN2026-Asteroids\bin\Asteroids.exe
   ..\..\assets\asteroid.shape
