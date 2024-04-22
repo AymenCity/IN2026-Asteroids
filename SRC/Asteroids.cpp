@@ -1,5 +1,5 @@
 #include "Asteroid.h"
-#include "Power.h"
+#include "ItemLife.h"
 #include "Asteroids.h"
 #include "Animation.h"
 #include "AnimationManager.h"
@@ -59,8 +59,8 @@ void Asteroids::Start()
 	Animation *explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("explosion", 64, 1024, 64, 64, "explosion_fs.png");
 	Animation *asteroid1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("asteroid1", 128, 8192, 128, 128, "asteroid1_fs.png");
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
-	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "item1_fs.png"); //object - item
-	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "power1_fs_new.png"); //explosion - item
+	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "itemLife_fs.png"); //object - item
+	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "itemLifeExplosion_fs.png"); //explosion - item
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -171,7 +171,7 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		}
 		isPower = false;
 	}
-	if (object->GetType() == GameObjectType("Power"))
+	if (object->GetType() == GameObjectType("ItemLife"))
 	{
 		shared_ptr<GameObject> power1 = CreatePowerExplosion();
 		power1->SetPosition(object->GetPosition());
@@ -264,7 +264,7 @@ void Asteroids::CreateItems(const uint num_items)
 		shared_ptr<Sprite> item1_sprite
 			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
 		item1_sprite->SetLoopAnimation(true);
-		shared_ptr<GameObject> item = make_shared<Power>();
+		shared_ptr<GameObject> item = make_shared<ItemLife>();
 		item->SetBoundingShape(make_shared<BoundingSphere>(item->GetThisPtr(), 10.0f));
 		item->SetSprite(item1_sprite);
 		item->SetScale(0.2f);

@@ -25,7 +25,7 @@ public:
 			mLives -= 1;
 			FirePlayerKilled();
 		}
-		if (object->GetType() == GameObjectType("Power")) {
+		if (object->GetType() == GameObjectType("ItemLife")) {
 			mLives++;
 			FirePlayerKilled();
 		}
