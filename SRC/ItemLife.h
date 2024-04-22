@@ -1,5 +1,5 @@
-#ifndef __POWER_H__
-#define __POWER_H__
+#ifndef __ITEMLIFE_H__
+#define __ITEMLIFE_H__
 
 #include "GameObject.h"
 

@@ -1,5 +1,6 @@
 #include "Asteroid.h"
 #include "ItemLife.h"
+#include "ItemDouble.h"
 #include "Asteroids.h"
 #include "Animation.h"
 #include "AnimationManager.h"
@@ -12,6 +13,7 @@
 #include "BoundingSphere.h"
 #include "GUILabel.h"
 #include "Explosion.h"
+
 
 // PUBLIC INSTANCE CONSTRUCTORS ///////////////////////////////////////////////
 
@@ -61,6 +63,7 @@ void Asteroids::Start()
 	Animation *spaceship_anim = AnimationManager::GetInstance().CreateAnimationFromFile("spaceship", 128, 128, 128, 128, "spaceship_fs.png");
 	Animation *item1_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item1", 128, 8192, 128, 128, "itemLife_fs.png"); //object - item
 	Animation *item1explosion_anim = AnimationManager::GetInstance().CreateAnimationFromFile("power1", 64, 1024, 64, 64, "itemLifeExplosion_fs.png"); //explosion - item
+	Animation *item2_anim = AnimationManager::GetInstance().CreateAnimationFromFile("item2", 128, 8192, 128, 128, "itemDouble_fs.png"); //object - item
 
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
@@ -102,7 +105,8 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		mLivesLabel->SetVisible(true);	// displays lives label
 		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
 		CreateAsteroids(4);							// spawns more asteroids
-		CreateItems(3);
+		CreateItem1(3);
+		CreateItem2(2);
 	}
 	else {
 		switch (key)
@@ -255,7 +259,7 @@ void Asteroids::CreateAsteroids(const uint num_asteroids)
 	}
 }
 
-void Asteroids::CreateItems(const uint num_items)
+void Asteroids::CreateItem1(const uint num_items)
 {
 	mItemsCount = num_items;
 	for (uint i = 0; i < num_items; i++)
@@ -267,6 +271,23 @@ void Asteroids::CreateItems(const uint num_items)
 		shared_ptr<GameObject> item = make_shared<ItemLife>();
 		item->SetBoundingShape(make_shared<BoundingSphere>(item->GetThisPtr(), 10.0f));
 		item->SetSprite(item1_sprite);
+		item->SetScale(0.2f);
+		mGameWorld->AddObject(item);
+	}
+}
+
+void Asteroids::CreateItem2(const uint num_items)
+{
+	mItemsCount = num_items;
+	for (uint i = 0; i < num_items; i++)
+	{
+		Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("item2");
+		shared_ptr<Sprite> item2_sprite
+			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+		item2_sprite->SetLoopAnimation(true);
+		shared_ptr<GameObject> item = make_shared<ItemDouble>();
+		item->SetBoundingShape(make_shared<BoundingSphere>(item->GetThisPtr(), 10.0f));
+		item->SetSprite(item2_sprite);
 		item->SetScale(0.2f);
 		mGameWorld->AddObject(item);
 	}
@@ -330,7 +351,7 @@ void Asteroids::OnScoreChanged(int score)
 	std::string score_msg = msg_stream.str();
 	mScoreLabel->SetText(score_msg);
 	if (score % 50 == 0) {		// condition where every 50 points, an item spawns
-		CreateItems(1);
+		CreateItem1(1);
 	}
 }
 
