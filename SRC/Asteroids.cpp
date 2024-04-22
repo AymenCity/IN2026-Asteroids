@@ -105,9 +105,9 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		mScoreLabel->SetVisible(true);	// displays score label
 		mLivesLabel->SetVisible(true);	// displays lives label
 		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
-		CreateAsteroids(4);							// spawns more asteroids
-		CreateItem1(3);
-		CreateItem2(2);
+		CreateAsteroids(3);							// spawns more asteroids
+		//CreateItem1(3);
+		//CreateItem2(2);
 	}
 	else {
 		switch (key)
@@ -355,8 +355,19 @@ void Asteroids::OnScoreChanged(int score)
 	// Get the score message as a string
 	std::string score_msg = msg_stream.str();
 	mScoreLabel->SetText(score_msg);
-	if (score % 50 == 0) {		// condition where every 50 points, an item spawns
-		CreateItem1(1);
+
+	if (score % 100 == 0) {		// condition where every 100 points, an item spawns
+		// variable generates random number
+		// https://www.geeksforgeeks.org/rand-and-srand-in-ccpp/
+		int randomNum = rand() % 2;
+
+		// chooses a random item based on variable
+		if (randomNum == 0) {
+			CreateItem1(1);
+		}
+		else {
+			CreateItem2(1);
+		}
 	}
 }
 
