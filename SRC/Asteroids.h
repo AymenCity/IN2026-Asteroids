@@ -10,6 +10,8 @@
 #include "Player.h"
 #include "IPlayerListener.h"
 
+#include "CPU.h"
+
 class GameObject;
 class Spaceship;
 class GUILabel;
@@ -67,14 +69,18 @@ private:
 	shared_ptr<GameObject> CreateExplosion();
 	shared_ptr<GameObject> CreatePowerExplosion();
 	shared_ptr<GameObject> CreatePowerExplosion2();
+	void StartDemoMode();
 	
 	const static uint SHOW_GAME_OVER = 0;
 	const static uint START_NEXT_LEVEL = 1;
 	const static uint CREATE_NEW_PLAYER = 2;
 	const static uint ITEM_PICKED = 3;
+	const static uint DEMO_MODE_ACTIONS = 4;
+	const static uint DEMO_MODE_SHOOT = 5;
 
 	ScoreKeeper mScoreKeeper;
 	Player mPlayer;
+	CPU mComputerPlayer;
 	bool isPower = false;
 };
 

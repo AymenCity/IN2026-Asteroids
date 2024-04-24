@@ -13,6 +13,7 @@
 #include "BoundingSphere.h"
 #include "GUILabel.h"
 #include "Explosion.h"
+#include "CPU.h"
 
 
 // PUBLIC INSTANCE CONSTRUCTORS ///////////////////////////////////////////////
@@ -69,6 +70,8 @@ void Asteroids::Start()
 	// Create a spaceship and add it to the world
 	// mGameWorld->AddObject(CreateSpaceship());
 	// Create some asteroids and add them to the world
+
+	//StartDemoMode(mSpaceship);
 	CreateAsteroids(1);
 
 	//Create the GUI
@@ -83,6 +86,8 @@ void Asteroids::Start()
 
 	// Add this class as a listener of the player
 	mPlayer.AddListener(thisPtr);
+
+	StartDemoMode();
 
 	// Start the game
 	GameSession::Start();
@@ -224,7 +229,43 @@ void Asteroids::OnTimer(int value)
 	{
 		mGameWorld->AddObject(mSpaceship);
 	}
+	if (value == DEMO_MODE_ACTIONS) 
+	{
+		int action = rand() % 3; // generate a random number to determine the action
+
+		// thrust
+		int thrustPower = 20;
+		if (action == 0 && mSpaceship) {
+			int thrustDirection = rand() % 360; // Randomly choose thrust direction
+			mSpaceship->Thrust(thrustPower);
+			mSpaceship->SetRotation(thrustDirection);
+		}
+		else // If no thrust action, continue moving with previous velocity
+		{
+			mSpaceship->Thrust(0); // Stop applying thrust
+		}
+
+		// Rotate left
+		if (action == 1 && mSpaceship) {
+			mSpaceship->Rotate(90);
+		}
+
+		// Rotate right
+		if (action == 2 && mSpaceship) {
+			mSpaceship->Rotate(-90);
+		}
+
+		SetTimer(500, DEMO_MODE_ACTIONS); // Adjust interval as needed
+		SetTimer(100, DEMO_MODE_SHOOT); // Adjust interval as needed
+	}
+	if (value == DEMO_MODE_SHOOT)
+	{
+		mSpaceship->Shoot();
+	}
 }
+
+	
+
 
 // PROTECTED INSTANCE METHODS /////////////////////////////////////////////////
 shared_ptr<GameObject> Asteroids::CreateSpaceship()
@@ -439,6 +480,33 @@ shared_ptr<GameObject> Asteroids::CreatePowerExplosion2()
 	power2->Reset();
 	return power2;
 }
+
+void Asteroids::StartDemoMode() {
+	// Hide start label and show other necessary GUI elements
+	mStartLabel->SetVisible(false);
+	mScoreLabel->SetVisible(true);
+	mLivesLabel->SetVisible(true);
+
+	shared_ptr<Asteroids> thisPtr = shared_ptr<Asteroids>(this);
+
+	// Add computer player as a listener to game world
+	mGameWorld->AddListener(&mComputerPlayer);
+
+	// Add this class as a listener of the score keeper
+	mComputerPlayer.AddListener(thisPtr);
+
+	if (!mSpaceship) {
+		mGameWorld->AddObject(CreateSpaceship());
+	}
+
+	// Add a delay to the demo mode actions to make them occur at intervals
+	SetTimer(500, DEMO_MODE_ACTIONS); // Adjust interval as needed
+
+
+}
+
+
+
 
 
 
