@@ -71,8 +71,7 @@ void Asteroids::Start()
 	// mGameWorld->AddObject(CreateSpaceship());
 	// Create some asteroids and add them to the world
 
-	//StartDemoMode(mSpaceship);
-	CreateAsteroids(1);
+	//CreateAsteroids(1);
 
 	//Create the GUI
 	CreateGUI();
@@ -87,7 +86,7 @@ void Asteroids::Start()
 	// Add this class as a listener of the player
 	mPlayer.AddListener(thisPtr);
 
-	StartDemoMode();
+	//StartDemoMode();
 
 	// Start the game
 	GameSession::Start();
@@ -104,7 +103,9 @@ void Asteroids::Stop()
 
 void Asteroids::OnKeyPressed(uchar key, int x, int y)
 {
-	if (!mSpaceship)
+	key = toupper(key); //https://www.programiz.com/cpp-programming/library-function/cctype/toupper
+
+	if (key == ' ' && !mSpaceship)
 	{
 		mStartLabel->SetVisible(false);	// hides start label
 		mScoreLabel->SetVisible(true);	// displays score label
@@ -113,6 +114,10 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 		CreateAsteroids(3);							// spawns more asteroids
 		//CreateItem1(3);
 		//CreateItem2(2);
+	}
+	if (key == 'D'  && !mSpaceship)
+	{
+		StartDemoMode();
 	}
 	else {
 		switch (key)
@@ -240,23 +245,23 @@ void Asteroids::OnTimer(int value)
 			mSpaceship->Thrust(thrustPower);
 			mSpaceship->SetRotation(thrustDirection);
 		}
-		else // If no thrust action, continue moving with previous velocity
+		else // prevents spaceship from moving forever in the same direction
 		{
-			mSpaceship->Thrust(0); // Stop applying thrust
+			mSpaceship->Thrust(0); // stops the thrust if action isnt chosen
 		}
 
-		// Rotate left
+		// rotates left
 		if (action == 1 && mSpaceship) {
 			mSpaceship->Rotate(90);
 		}
 
-		// Rotate right
+		// rotates right
 		if (action == 2 && mSpaceship) {
 			mSpaceship->Rotate(-90);
 		}
 
-		SetTimer(500, DEMO_MODE_ACTIONS); // Adjust interval as needed
-		SetTimer(100, DEMO_MODE_SHOOT); // Adjust interval as needed
+		SetTimer(500, DEMO_MODE_ACTIONS);	// new demo action every 500 timer
+		SetTimer(100, DEMO_MODE_SHOOT);		// new demo shooting every 100 timer
 	}
 	if (value == DEMO_MODE_SHOOT)
 	{
@@ -482,11 +487,13 @@ shared_ptr<GameObject> Asteroids::CreatePowerExplosion2()
 }
 
 void Asteroids::StartDemoMode() {
-	// Hide start label and show other necessary GUI elements
 	mStartLabel->SetVisible(false);
 	mScoreLabel->SetVisible(true);
 	mLivesLabel->SetVisible(true);
 
+	CreateAsteroids(3);
+
+	// pointer
 	shared_ptr<Asteroids> thisPtr = shared_ptr<Asteroids>(this);
 
 	// Add computer player as a listener to game world
@@ -499,10 +506,7 @@ void Asteroids::StartDemoMode() {
 		mGameWorld->AddObject(CreateSpaceship());
 	}
 
-	// Add a delay to the demo mode actions to make them occur at intervals
-	SetTimer(500, DEMO_MODE_ACTIONS); // Adjust interval as needed
-
-
+	SetTimer(500, DEMO_MODE_ACTIONS);
 }
 
 
