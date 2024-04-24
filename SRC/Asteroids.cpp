@@ -77,6 +77,9 @@ void Asteroids::Start()
 	CreateGUI();
 
 	mStartLabel->SetVisible(true);
+	mStartLabel2->SetVisible(true);
+	mStartLabel3->SetVisible(true);
+	mStartLabel4->SetVisible(true);
 	mScoreLabel->SetVisible(false);
 	mLivesLabel->SetVisible(false);
 
@@ -108,6 +111,9 @@ void Asteroids::OnKeyPressed(uchar key, int x, int y)
 	if (key == ' ' && !mSpaceship)
 	{
 		mStartLabel->SetVisible(false);	// hides start label
+		mStartLabel2->SetVisible(false);
+		mStartLabel3->SetVisible(false);
+		mStartLabel4->SetVisible(false);
 		mScoreLabel->SetVisible(true);	// displays score label
 		mLivesLabel->SetVisible(true);	// displays lives label
 		mGameWorld->AddObject(CreateSpaceship());	// spawns player/spaceship
@@ -221,7 +227,7 @@ void Asteroids::OnTimer(int value)
 	if (value == START_NEXT_LEVEL)
 	{
 		mLevel++;
-		int num_asteroids = 10 + 2 * mLevel;
+		int num_asteroids = 5 + 2 * mLevel;
 		CreateAsteroids(num_asteroids);
 	}
 
@@ -379,7 +385,7 @@ void Asteroids::CreateGUI()
 	mGameDisplay->GetContainer()->AddComponent(game_over_component, GLVector2f(0.5f, 0.5f));
 
 	// create start_screen label
-	mStartLabel = shared_ptr<GUILabel>(new GUILabel("PRESS ANY KEY TO START"));
+	mStartLabel = shared_ptr<GUILabel>(new GUILabel("--- ASTEROID GAME ---"));
 	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
 	mStartLabel->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
 	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
@@ -389,9 +395,50 @@ void Asteroids::CreateGUI()
 	// Add the GUILabel to the GUIContainer  
 	shared_ptr<GUIComponent> start_component
 		= static_pointer_cast<GUIComponent>(mStartLabel);
-	mGameDisplay->GetContainer()->AddComponent(start_component, GLVector2f(0.5f, 0.5f));
+	mGameDisplay->GetContainer()->AddComponent(start_component, GLVector2f(0.5f, 0.75f));
+
+	// create start_screen label
+	mStartLabel2 = shared_ptr<GUILabel>(new GUILabel("BY AYMEN SAID"));
+	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
+	mStartLabel2->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
+	mStartLabel2->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	// Set the visibility of the label to false (hidden)
+	mStartLabel2->SetVisible(false);
+	// Add the GUILabel to the GUIContainer  
+	shared_ptr<GUIComponent> start_component2
+		= static_pointer_cast<GUIComponent>(mStartLabel2);
+	mGameDisplay->GetContainer()->AddComponent(start_component2, GLVector2f(0.5f, 0.69f));
+
+	// create start_screen label
+	mStartLabel3 = shared_ptr<GUILabel>(new GUILabel("PRESS SPACEBAR TO PLAY"));
+	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
+	mStartLabel3->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
+	mStartLabel3->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	// Set the visibility of the label to false (hidden)
+	mStartLabel3->SetVisible(false);
+	// Add the GUILabel to the GUIContainer  
+	shared_ptr<GUIComponent> start_component3
+		= static_pointer_cast<GUIComponent>(mStartLabel3);
+	mGameDisplay->GetContainer()->AddComponent(start_component3, GLVector2f(0.5f, 0.31f));
+
+	// create start_screen label
+	mStartLabel4 = shared_ptr<GUILabel>(new GUILabel("PRESS D TO GO DEMO MODE"));
+	// Set the horizontal alignment of the label to GUI_HALIGN_CENTER
+	mStartLabel4->SetHorizontalAlignment(GUIComponent::GUI_HALIGN_CENTER);
+	// Set the vertical alignment of the label to GUI_VALIGN_MIDDLE
+	mStartLabel4->SetVerticalAlignment(GUIComponent::GUI_VALIGN_MIDDLE);
+	// Set the visibility of the label to false (hidden)
+	mStartLabel4->SetVisible(false);
+	// Add the GUILabel to the GUIContainer  
+	shared_ptr<GUIComponent> start_component4
+		= static_pointer_cast<GUIComponent>(mStartLabel4);
+	mGameDisplay->GetContainer()->AddComponent(start_component4, GLVector2f(0.5f, 0.25f));
 
 }
+
+
 
 void Asteroids::OnScoreChanged(int score)
 {
@@ -488,6 +535,9 @@ shared_ptr<GameObject> Asteroids::CreatePowerExplosion2()
 
 void Asteroids::StartDemoMode() {
 	mStartLabel->SetVisible(false);
+	mStartLabel2->SetVisible(false);
+	mStartLabel3->SetVisible(false);
+	mStartLabel4->SetVisible(false);
 	mScoreLabel->SetVisible(true);
 	mLivesLabel->SetVisible(true);
 
